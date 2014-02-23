@@ -27,7 +27,7 @@ TARGET_SPECIFIC_HEADER_PATH := device/samsung/d2lte/include
 
 # Kernel
 TARGET_KERNEL_SOURCE        := kernel/samsung/d2
-BOARD_KERNEL_CMDLINE        := androidboot.hardware=qcom user_debug=31 zcache
+BOARD_KERNEL_CMDLINE        := androidboot.hardware=qcom androidboot.selinux=permissive user_debug=31 zcache
 BOARD_KERNEL_BASE           := 0x80200000
 BOARD_MKBOOTIMG_ARGS        := --ramdisk_offset 0x01300000
 BOARD_KERNEL_PAGESIZE       := 2048
@@ -97,6 +97,36 @@ COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
 
 # Separate audio devices for VOIP
 BOARD_USES_SEPERATED_VOIP := true
+
+# Use retire fence from MDP driver
+TARGET_DISPLAY_USE_RETIRE_FENCE := true
+
+# SELinux
+BOARD_SEPOLICY_DIRS += \
+        device/samsung/d2lte/sepolicy
+
+BOARD_SEPOLICY_UNION += \
+        file_contexts \
+        app.te \
+        bluetooth.te \
+        device.te \
+        domain.te \
+        drmserver.te \
+        file.te \
+        hci_init.te \
+        healthd.te \
+        init.te \
+        init_shell.te \
+        keystore.te \
+        kickstart.te \
+        mediaserver.te \
+        nfc.te \
+        rild.te \
+        surfaceflinger.te \
+        system.te \
+        ueventd.te \
+        wpa.te \
+        wpa_socket.te
 
 ifeq ($(filter cm_apexqtmo cm_expressatt,$(TARGET_PRODUCT)),)
 # Assert
